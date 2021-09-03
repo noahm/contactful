@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Header } from "./Header";
+import { ContactList } from "./ContactList";
+import { useEffect } from "react";
+import { useStore } from "./stores/contacts";
 
 function App() {
+  const loadContacts = useStore((store) => store.loadContacts);
+  const isLoading = useStore((store) => store.loading);
+  useEffect(() => {
+    loadContacts();
+  }, [loadContacts]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+      <ContactList />
+      <footer>
+        <a href="https://github.com/noahm/contactful">src</a> :: &#169; 2021
+      </footer>
+      {isLoading && <div className="loader" />}
     </div>
   );
 }
