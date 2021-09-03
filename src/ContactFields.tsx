@@ -115,7 +115,7 @@ export function VectorField({
               />
             ))}
             <button className="contact-add-button" onClick={addNewValue}>
-              + ${placeholder}
+              + {placeholder}
             </button>
           </>
         ) : (
