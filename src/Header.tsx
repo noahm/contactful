@@ -1,4 +1,5 @@
 import { useStore } from "./stores/contacts";
+import { getQuery } from "./utils/query";
 
 export function Header() {
   const matchCount = useStore((store) => store.filteredContacts.length);
@@ -9,7 +10,8 @@ export function Header() {
       <div className="title">contactful</div>
       <div className="searchBar card">
         <input
-          type="text"
+          type="search"
+          defaultValue={getQuery() || ""}
           className="searchInput paper block"
           onChange={(e) => applyFilter(e.currentTarget.value)}
           placeholder="search people..."

@@ -49,6 +49,7 @@ input[type="text"],
 input[type="tel"],
 input[type="email"],
 input[type="submit"],
+input[type="search"],
 textarea {
   font-size: 1rem;
   color: var(--fg);
@@ -63,6 +64,7 @@ input[type="text"],
 input[type="tel"],
 input[type="email"],
 input[type="submit"],
+input[type="search"],
 textarea {
   transition: background-color 0.2s;
 }

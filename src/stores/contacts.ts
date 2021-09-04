@@ -2,7 +2,7 @@ import create from "zustand";
 import produce from "immer";
 import { Guid } from "guid-ts";
 import { client } from "../utils/trpc";
-import { setQuery } from "../utils/query";
+import { setQuery, getQuery } from "../utils/query";
 import type { Contact } from "../../models/Contact";
 import { filterForTerm } from "../utils/search";
 import { todayISO } from "../utils/today";
@@ -67,10 +67,15 @@ export const useStore = create<Store>((set) => ({
     for (const c of allContacts) {
       contactsByKey[c.key] = c;
     }
+    const queryTerm = getQuery();
+    let filteredContacts = allContacts;
+    if (queryTerm) {
+      filteredContacts = filteredContacts.filter(filterForTerm(queryTerm));
+    }
     set({
       loading: false,
       allContacts,
-      filteredContacts: allContacts,
+      filteredContacts,
       contactsByKey,
     });
   },
