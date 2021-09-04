@@ -4,7 +4,7 @@ import { trpcMiddleware } from "./trpc";
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, "../build")));
+app.use(express.static(path.resolve(__dirname, "../../build")));
 
 app.use("/api", trpcMiddleware);
 

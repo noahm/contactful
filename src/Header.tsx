@@ -6,7 +6,7 @@ export function Header() {
   const applyFilter = useStore((store) => store.applyFilter);
   return (
     <header>
-      <div className="title">mira</div>
+      <div className="title">contactful</div>
       <div className="searchBar card">
         <input
           type="text"

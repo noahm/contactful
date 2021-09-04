@@ -89,7 +89,7 @@ export function VectorField({
     const newVals = localValues.slice();
     newVals[i] = v;
     setLocalValues(newVals);
-    contact[label] = localValues;
+    contact[label] = newVals;
   };
 
   const Tag = multiline ? "textarea" : "input";
@@ -109,7 +109,7 @@ export function VectorField({
                 autoComplete="none"
                 onKeyDown={persistIfEnter}
                 onChange={(e) => {
-                  contact[label] = e.currentTarget.value;
+                  updateValue(e.currentTarget.value, i);
                 }}
                 placeholder={placeholder}
               />

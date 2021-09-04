@@ -7,11 +7,16 @@ export const contacts = deta.Base("people");
 
 export async function allItems(store: typeof contacts) {
   let ret: Array<ObjectType> = [];
+  console.log("fetching from store");
   let result = await store.fetch();
-  while (result.count) {
+  while (true) {
+    console.log(`got ${result.count} items`);
     ret = result.items.concat(ret);
     if (result.last) {
+      console.log(`Have more results, fetching from store again`);
       result = await store.fetch(undefined, { last: result.last });
+    } else {
+      break;
     }
   }
 

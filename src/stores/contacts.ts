@@ -1,10 +1,12 @@
 import create from "zustand";
-import produce from "immer";
+import produce, { setAutoFreeze } from "immer";
 import { client } from "../utils/trpc";
 import { setQuery } from "../utils/query";
 import type { Contact } from "../../models/Contact";
 import { filterForTerm } from "../utils/search";
 import { todayISO } from "../utils/today";
+
+setAutoFreeze(false);
 
 interface Store {
   allContacts: Array<Contact>;

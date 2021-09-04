@@ -86,7 +86,11 @@ function ContactItem({ contact }: ContactProps) {
               label={args.key}
               multiline={args.multiline}
               placeholder={args.placeholder}
-              values={(contact[args.key] as string[]) || []}
+              values={
+                Array.isArray(contact[args.key])
+                  ? (contact[args.key] as string[])
+                  : []
+              }
               save={saveChanges}
             />
           ))}
