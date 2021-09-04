@@ -8,18 +8,16 @@ In the project directory, you can run:
 
 ### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Runs the app in the development mode with live reloading of both the front and back end.
 
 You will need to create a `.env.local` file with a `DETA_PROJECT_KEY` entry for the
-local backend to persist to a real Deta Store.
+local backend to talk to a real Deta Store.
 
 ### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the unit tests in watch mode. (No real tests written yet.)
 
 ### `yarn build`
 
-Builds the app for production to the `build` and `micro` folders.\
-Run this before doing your `deta deploy`.
+Builds the app for production into the `build` and `micro` folders.\
+Run this before doing `deta deploy`.
