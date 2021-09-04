@@ -32,12 +32,13 @@ interface ContactProps {
 function ContactItem({ contact }: ContactProps) {
   const deleteContact = useStore((store) => store.deleteContact);
   const [editing, setEditing] = useState<Contact | null>(
-    contact["name"] === "?" ? contact : null
+    contact.__local ? contact : null
   );
   const ref = useRef<HTMLLIElement>(null);
 
   const displayContact = editing || contact;
   const saveContact = useStore((s) => s.saveContact);
+  const deleteMe = () => deleteContact(contact);
   const toggleEditing = () => setEditing((prev) => (prev ? null : contact));
   const saveChanges = () => {
     if (editing) {
@@ -117,18 +118,20 @@ function ContactItem({ contact }: ContactProps) {
       {editing ? (
         <div className="buttonFooter split-h frost">
           <div className="left buttonArea">
-            <button
-              className="contact-button"
-              onClick={() => deleteContact(contact)}
-            >
-              delete
-            </button>
+            {!editing.__local && (
+              <button className="contact-button" onClick={deleteMe}>
+                delete
+              </button>
+            )}
           </div>
           <div className="right buttonArea">
             <button className="contact-button" onClick={fillToday}>
               today!
             </button>
-            <button className="contact-button" onClick={toggleEditing}>
+            <button
+              className="contact-button"
+              onClick={editing.__local ? deleteMe : toggleEditing}
+            >
               cancel
             </button>
             <button className="contact-button" onClick={saveChanges}>

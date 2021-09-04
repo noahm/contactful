@@ -36,6 +36,7 @@ export const useStore = create<Store>((set) => ({
       key: Guid.newGuid().toString(),
       name: "?",
       last: todayISO(),
+      __local: "true",
     };
     set(
       produce((state: Store) => {
@@ -80,19 +81,20 @@ export const useStore = create<Store>((set) => ({
     });
   },
   saveContact: async (contact) => {
-    const mutation = client.mutation("savePerson", contact);
-    let resolved = contact;
-    if (!contact.key) {
-      resolved = await mutation;
+    if (contact.__local) {
+      contact = produce(contact, (c) => {
+        delete contact.__local;
+      });
     }
+    client.mutation("savePerson", contact);
     set(
       produce((state: Store) => {
-        state.contactsByKey[resolved.key!] = resolved;
-        replaceInArr(state.allContacts, resolved);
-        replaceInArr(state.filteredContacts, resolved);
+        state.contactsByKey[contact.key!] = contact;
+        replaceInArr(state.allContacts, contact);
+        replaceInArr(state.filteredContacts, contact);
       })
     );
-    return resolved;
+    return contact;
   },
   deleteContact: async (contact) => {
     if (!contact.key) {

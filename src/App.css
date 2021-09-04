@@ -101,6 +101,11 @@ input[type="submit"].card:focus {
   opacity: 0.75;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .bg {
   background: var(--bg);
 }
