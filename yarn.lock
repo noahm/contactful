@@ -5630,6 +5630,11 @@ growly@^1.3.0:
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
 
+guid-ts@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/guid-ts/-/guid-ts-1.1.1.tgz#ceff401e99ae3842d67ce8fd6055da811425ffaf"
+  integrity sha512-bter/lPaGsiLJQmdXOoV1k04v1d9hbhkWrdq06b3aTz++a/2ZTer9c/WLhf1qNr6F1+c3idaPngRjgpyXE8DEQ==
+
 gzip-size@5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/gzip-size/-/gzip-size-5.1.1.tgz#cb9bee692f87c0612b232840a873904e4c135274"

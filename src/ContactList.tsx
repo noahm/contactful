@@ -1,3 +1,4 @@
+import produce from "immer";
 import { useRef, useState } from "react";
 import { Contact } from "../models/Contact";
 import { ScalarField, VectorField } from "./ContactFields";
@@ -30,33 +31,48 @@ interface ContactProps {
 
 function ContactItem({ contact }: ContactProps) {
   const deleteContact = useStore((store) => store.deleteContact);
-  const [isEditing, setEditing] = useState(false);
+  const [editing, setEditing] = useState<Contact | null>(
+    contact["name"] === "?" ? contact : null
+  );
   const ref = useRef<HTMLLIElement>(null);
 
+  const displayContact = editing || contact;
   const saveContact = useStore((s) => s.saveContact);
-  const toggleEditing = () => setEditing((prev) => !prev);
+  const toggleEditing = () => setEditing((prev) => (prev ? null : contact));
   const saveChanges = () => {
-    saveContact(contact);
-    toggleEditing();
+    if (editing) {
+      let toSave = editing;
+      if (!editing.key && contact.key) {
+        toSave = {
+          ...editing,
+          key: contact.key,
+        };
+      }
+      saveContact(toSave);
+      toggleEditing();
+    }
   };
   const fillToday = () => {
-    contact.last = todayISO();
-    setEditing(true);
+    setEditing(
+      produce(displayContact, () => {
+        contact.last = todayISO();
+      })
+    );
   };
 
   return (
     <li
       ref={ref}
       className={`contact-item card paper block split-v ${
-        isEditing ? "isEditing" : "notEditing"
+        editing ? "isEditing" : "notEditing"
       }`}
-      onClick={isEditing ? undefined : toggleEditing}
+      onClick={editing ? undefined : toggleEditing}
       onKeyUp={(evt) => {
         if (!ref.current || evt.target !== ref.current) return;
 
-        if (evt.key === "Enter" && !isEditing) {
+        if (evt.key === "Enter" && !editing) {
           saveChanges();
-        } else if (evt.key === "Escape" && isEditing) {
+        } else if (evt.key === "Escape" && editing) {
           toggleEditing();
         }
       }}
@@ -67,13 +83,14 @@ function ContactItem({ contact }: ContactProps) {
           {CONTACT_FIELDS.scalar.map((args) => (
             <ScalarField
               key={args.key}
-              contact={contact}
-              editing={isEditing}
+              contact={displayContact}
+              editing={!!editing}
               label={args.key}
               multiline={args.multiline}
               placeholder={args.placeholder}
-              value={(contact[args.key] as string) || ""}
+              value={(displayContact[args.key] as string) || ""}
               save={saveChanges}
+              setPending={setEditing}
             />
           ))}
         </div>
@@ -81,22 +98,23 @@ function ContactItem({ contact }: ContactProps) {
           {CONTACT_FIELDS.vector.map((args) => (
             <VectorField
               key={args.key}
-              contact={contact}
-              editing={isEditing}
+              contact={displayContact}
+              editing={!!editing}
               label={args.key}
               multiline={args.multiline}
               placeholder={args.placeholder}
               values={
-                Array.isArray(contact[args.key])
-                  ? (contact[args.key] as string[])
+                Array.isArray(displayContact[args.key])
+                  ? (displayContact[args.key] as string[])
                   : []
               }
               save={saveChanges}
+              setPending={setEditing}
             />
           ))}
         </div>
       </div>
-      {isEditing ? (
+      {editing ? (
         <div className="buttonFooter split-h frost">
           <div className="left buttonArea">
             <button

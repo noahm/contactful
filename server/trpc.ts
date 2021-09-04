@@ -2,7 +2,7 @@ import * as trpc from "@trpc/server";
 import { z } from "zod";
 import { allItems, contacts } from "./deta";
 import * as trpcExpress from "@trpc/server/adapters/express";
-import { PersistedContact } from "../models/Contact";
+import { Contact } from "../models/Contact";
 
 const router = trpc
   .router()
@@ -14,7 +14,7 @@ const router = trpc
   .mutation("savePerson", {
     input: z.object({ key: z.string().optional() }).passthrough(),
     resolve({ input }) {
-      return contacts.put(input, input.key) as Promise<PersistedContact>;
+      return contacts.put(input, input.key) as Promise<Contact>;
     },
   })
   .mutation("deletePerson", {

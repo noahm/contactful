@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import produce from "immer";
+import React from "react";
 import { Contact } from "../models/Contact";
 
 interface CommonProps {
@@ -7,6 +8,7 @@ interface CommonProps {
   placeholder: string;
   multiline: boolean;
   editing: boolean;
+  setPending: (c: Contact) => void;
   save: () => void;
 }
 
@@ -22,6 +24,7 @@ export function ScalarField({
   placeholder,
   multiline,
   save,
+  setPending,
 }: ScalarFieldProps) {
   if (!editing && !value) {
     return null;
@@ -41,12 +44,18 @@ export function ScalarField({
           <Tag
             type="text"
             name={label}
+            /* kludge hack to avoid autofill nonsense */
+            id={`search-${label}`}
             defaultValue={value}
             className="contact-input"
-            autoComplete="none"
+            autoComplete="off"
             onKeyDown={persistIfEnter}
             onChange={(e) => {
-              contact[label] = e.currentTarget.value;
+              setPending(
+                produce(contact, (c) => {
+                  c[label] = e.currentTarget.value;
+                })
+              );
             }}
             placeholder={placeholder}
           />
@@ -70,9 +79,8 @@ export function VectorField({
   placeholder,
   multiline,
   save,
+  setPending,
 }: VectorFieldProps) {
-  const [localValues, setLocalValues] = useState(values);
-
   if (!editing && !values.length) {
     return null;
   }
@@ -83,13 +91,17 @@ export function VectorField({
   };
 
   const addNewValue = () => {
-    updateValue("", localValues.length);
+    updateValue("", values.length);
   };
   const updateValue = (v: string, i: number) => {
-    const newVals = localValues.slice();
-    newVals[i] = v;
-    setLocalValues(newVals);
-    contact[label] = newVals;
+    setPending(
+      produce(contact, (c) => {
+        if (!Array.isArray(c[label])) {
+          c[label] = [];
+        }
+        (c[label] as string[])[i] = v;
+      })
+    );
   };
 
   const Tag = multiline ? "textarea" : "input";
@@ -99,14 +111,16 @@ export function VectorField({
       <div className="entries">
         {editing ? (
           <>
-            {localValues.map((v, i) => (
+            {values.map((v, i) => (
               <Tag
                 key={i}
+                /* kludge hack to avoid autofill nonsense */
+                id={`search-${label}-${i}`}
                 type="text"
                 name={`${label}-${i}`}
                 defaultValue={v}
                 className="contact-input"
-                autoComplete="none"
+                autoComplete="off"
                 onKeyDown={persistIfEnter}
                 onChange={(e) => {
                   updateValue(e.currentTarget.value, i);
