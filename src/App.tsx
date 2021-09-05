@@ -1,3 +1,4 @@
+import "./fonts/fonts.css";
 import "./App.css";
 import { Header } from "./Header";
 import { ContactList } from "./ContactList";
