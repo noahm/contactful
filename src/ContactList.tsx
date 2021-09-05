@@ -55,8 +55,8 @@ function ContactItem({ contact }: ContactProps) {
   };
   const fillToday = () => {
     setEditing(
-      produce(displayContact, () => {
-        contact.last = todayISO();
+      produce(displayContact, (c) => {
+        c.last = todayISO();
       })
     );
   };

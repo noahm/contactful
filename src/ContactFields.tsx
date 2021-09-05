@@ -46,7 +46,7 @@ export function ScalarField({
             name={label}
             /* kludge hack to avoid autofill nonsense */
             id={`search-${label}`}
-            defaultValue={value}
+            value={value}
             className="contact-input"
             autoComplete="off"
             onKeyDown={persistIfEnter}
