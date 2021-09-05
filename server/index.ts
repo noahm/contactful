@@ -4,7 +4,14 @@ import { trpcMiddleware } from "./trpc";
 
 const app = express();
 
-app.use(express.static(path.resolve(__dirname, "../../build")));
+const serveStatic = express.static(path.resolve(__dirname, "../../build"));
+
+app.use((req, res, next) => {
+  serveStatic(req, res, next);
+  if (req.url === "/") {
+    res.setHeader("cache-control", "no-store");
+  }
+});
 
 app.use("/api", trpcMiddleware);
 
