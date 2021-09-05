@@ -1,10 +1,16 @@
+import { useMemo } from "react";
 import { useStore } from "./stores/contacts";
+import { debounce } from "./utils/debounce";
 import { getQuery } from "./utils/query";
 
 export function Header() {
   const matchCount = useStore((store) => store.filteredContacts.length);
   const addContact = useStore((store) => store.createNewContact);
   const applyFilter = useStore((store) => store.applyFilter);
+  const debouncedFilter = useMemo(
+    () => debounce(applyFilter, 200),
+    [applyFilter]
+  );
   return (
     <header>
       <div className="title">contactful</div>
@@ -13,7 +19,7 @@ export function Header() {
           type="search"
           defaultValue={getQuery() || ""}
           className="searchInput paper block"
-          onChange={(e) => applyFilter(e.currentTarget.value)}
+          onChange={(e) => debouncedFilter(e.currentTarget.value)}
           placeholder="search people..."
           autoFocus
         />
