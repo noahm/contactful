@@ -42,14 +42,7 @@ function ContactItem({ contact }: ContactProps) {
   const toggleEditing = () => setEditing((prev) => (prev ? null : contact));
   const saveChanges = () => {
     if (editing) {
-      let toSave = editing;
-      if (!editing.key && contact.key) {
-        toSave = {
-          ...editing,
-          key: contact.key,
-        };
-      }
-      saveContact(toSave);
+      saveContact(editing);
       toggleEditing();
     }
   };

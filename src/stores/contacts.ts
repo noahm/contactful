@@ -7,6 +7,7 @@ import type { Contact } from "../../models/Contact";
 import { filterForTerm } from "../utils/search";
 import { todayISO } from "../utils/today";
 import { contactsSort } from "../utils/sort";
+import { trimArrays } from "../utils/trimArrays";
 
 interface Store {
   allContacts: Array<Contact>;
@@ -83,11 +84,12 @@ export const useStore = create<Store>((set) => ({
     });
   },
   saveContact: async (contact) => {
-    if (contact.__local) {
-      contact = produce(contact, (c) => {
-        delete contact.__local;
-      });
-    }
+    contact = produce(contact, (c) => {
+      trimArrays(c);
+      if (c.__local) {
+        delete c.__local;
+      }
+    });
     client.mutation("savePerson", contact);
     set(
       produce((state: Store) => {
