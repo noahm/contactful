@@ -38,7 +38,7 @@ function ContactItem({ contact }: ContactProps) {
 
   const displayContact = editing || contact;
   const saveContact = useStore((s) => s.saveContact);
-  const deleteMe = () => deleteContact(contact);
+  const deleteMe = () => deleteContact(displayContact);
   const toggleEditing = () => setEditing((prev) => (prev ? null : contact));
   const saveChanges = () => {
     if (editing) {

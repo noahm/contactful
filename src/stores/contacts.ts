@@ -101,6 +101,9 @@ export const useStore = create<Store>((set) => ({
     return contact;
   },
   deleteContact: async (contact) => {
+    if (contact.name !== "?" && !window.confirm(`Delete ${contact.name}?`)) {
+      return;
+    }
     if (!contact.key) {
       set((store) => {
         const allContacts = store.allContacts.filter((c) => c !== contact);
