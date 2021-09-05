@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useStore } from "./stores/contacts";
 import { debounce } from "./utils/debounce";
+import { useHotkeyFocus } from "./utils/hotkeyFocus";
 import { getQuery } from "./utils/query";
 
 export function Header() {
@@ -11,11 +12,14 @@ export function Header() {
     () => debounce(applyFilter, 200),
     [applyFilter]
   );
+  const hotkeyFocus = useHotkeyFocus("/?");
+
   return (
     <header>
       <div className="title">contactful</div>
       <div className="searchBar card">
         <input
+          ref={hotkeyFocus}
           type="search"
           defaultValue={getQuery() || ""}
           className="searchInput paper block"
