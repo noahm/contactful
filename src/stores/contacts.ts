@@ -6,6 +6,7 @@ import { setQuery, getQuery } from "../utils/query";
 import type { Contact } from "../../models/Contact";
 import { filterForTerm } from "../utils/search";
 import { todayISO } from "../utils/today";
+import { contactsSort } from "../utils/sort";
 
 interface Store {
   allContacts: Array<Contact>;
@@ -64,6 +65,7 @@ export const useStore = create<Store>((set) => ({
   loadContacts: async () => {
     set({ loading: true });
     const allContacts = await client.query("allPeople");
+    allContacts.sort(contactsSort);
     const contactsByKey: Store["contactsByKey"] = {};
     for (const c of allContacts) {
       contactsByKey[c.key] = c;
@@ -92,6 +94,8 @@ export const useStore = create<Store>((set) => ({
         state.contactsByKey[contact.key!] = contact;
         replaceInArr(state.allContacts, contact);
         replaceInArr(state.filteredContacts, contact);
+        state.allContacts.sort(contactsSort);
+        state.filteredContacts.sort(contactsSort);
       })
     );
     return contact;
