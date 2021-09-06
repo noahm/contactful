@@ -7,7 +7,6 @@ export const contacts = deta.Base("people");
 
 export async function allItems(store: typeof contacts) {
   let ret: Array<ObjectType> = [];
-  console.log("fetching from store");
   let result = await store.fetch();
   while (true) {
     ret = result.items.concat(ret);
