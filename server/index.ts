@@ -13,6 +13,10 @@ app.use((req, res, next) => {
   }
 });
 
-app.use("/api", trpcMiddleware);
+app.use(express.json());
+app.use("/api", (req, res, next) => {
+  console.log("api call for", { path: req.url, body: req.body });
+  return trpcMiddleware(req, res, next);
+});
 
 export = app;

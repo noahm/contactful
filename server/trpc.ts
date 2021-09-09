@@ -18,7 +18,12 @@ const router = trpc
     },
   })
   .mutation("deletePerson", {
-    input: z.string(),
+    input: (inp: unknown) => {
+      if (typeof inp === "string") {
+        return inp;
+      }
+      throw new Error("Received non-string input: " + JSON.stringify(inp));
+    },
     resolve({ input }) {
       return contacts.delete(input);
     },
