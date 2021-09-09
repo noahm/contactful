@@ -106,25 +106,19 @@ export const useStore = create<Store>((set) => ({
     if (contact.name !== "?" && !window.confirm(`Delete ${contact.name}?`)) {
       return;
     }
-    if (!contact.key) {
-      set((store) => {
-        const allContacts = store.allContacts.filter((c) => c !== contact);
-        const filteredContacts = store.filteredContacts.filter(
-          (c) => c !== contact
-        );
-        return { allContacts, filteredContacts };
-      });
-    } else {
+    set((store) => {
+      const allContacts = store.allContacts.filter(
+        (c) => c.key !== contact.key
+      );
+      const filteredContacts = store.filteredContacts.filter(
+        (c) => c.key !== contact.key
+      );
+      const contactsByKey = { ...store.contactsByKey };
+      delete contactsByKey[contact.key!];
+      return { allContacts, filteredContacts, contactsByKey };
+    });
+    if (!contact.__local) {
       client.mutation("deletePerson", contact.key);
-      set((store) => {
-        const allContacts = store.allContacts.filter((c) => c !== contact);
-        const filteredContacts = store.filteredContacts.filter(
-          (c) => c !== contact
-        );
-        const contactsByKey = { ...store.contactsByKey };
-        delete contactsByKey[contact.key!];
-        return { allContacts, filteredContacts, contactsByKey };
-      });
     }
   },
 }));
