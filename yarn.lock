@@ -1657,18 +1657,18 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-"@trpc/client@^9.0.1":
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/@trpc/client/-/client-9.0.1.tgz#69b77759ddd7046eaad27420a3512fe96e345f9c"
-  integrity sha512-tZUFNA+jbbIqrW1hirpGOKfAMEmzO36MNsH8cMiCNHI3zbY0oRY3N0/Mj42HclVZiA0yFflSd9NWxm8vUZeSuQ==
+"@trpc/client@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@trpc/client/-/client-9.5.0.tgz#3838a55bb898480840164d28e0627262970db218"
+  integrity sha512-3pEXSSqwTyrvg6212Fof79a5Vv7cfr29+idH7DALDbVcuIB8L+tNtzkoMa2DReeBx6FawJsGoynq6WHbYVWQAA==
   dependencies:
     "@babel/runtime" "^7.9.0"
-    "@trpc/server" "^9.0.1"
+    "@trpc/server" "^9.5.0"
 
-"@trpc/server@^9.0.1":
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-9.0.1.tgz#193945274369489d855e11edfa4c209d84329e3f"
-  integrity sha512-+FRA9yI4ZzBCLUS22F+PeqXWZ9OCY2PAly8X6biDAPU2M+bJR/AJif9X4vJXrxNUS2DwCogx5YLrZrNRXCK5vw==
+"@trpc/server@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-9.5.0.tgz#1e457420023db8272c1e46c7696161215077ac15"
+  integrity sha512-rQxmUT2FEVzDkIh6VhnPc9Dm9uaCEKjq2o5Y0BJL7pRzJlOwbqtINxlQOPrH7gBHIj57i5A+ffycAavw+X+X8g==
   dependencies:
     tslib "^2.1.0"
 

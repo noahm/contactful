@@ -26,6 +26,5 @@ const router = trpc
 
 export const trpcMiddleware = trpcExpress.createExpressMiddleware({
   router,
-  createContext: () => null,
 });
 export type AppRouter = typeof router;
