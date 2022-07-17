@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support for importing contacts using outlook csv exports
+
 ### Changed
 
 - Broad sets of dependency updates
