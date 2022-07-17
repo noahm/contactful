@@ -4,6 +4,8 @@ import { allItems, contacts } from "./deta";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import { Contact } from "../models/Contact";
 
+const contactType = z.object({ key: z.string().optional() }).passthrough();
+
 const router = trpc
   .router()
   .query("allPeople", {
@@ -12,9 +14,15 @@ const router = trpc
     },
   })
   .mutation("savePerson", {
-    input: z.object({ key: z.string().optional() }).passthrough(),
+    input: contactType,
     resolve({ input }) {
       return contacts.put(input, input.key) as Promise<Contact>;
+    },
+  })
+  .mutation("saveMany", {
+    input: z.array(contactType),
+    resolve({ input }) {
+      return contacts.putMany(input).then((results) => results.processed.items);
     },
   })
   .mutation("deletePerson", {

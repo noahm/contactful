@@ -1,13 +1,12 @@
 import create from "zustand";
 import produce from "immer";
-import { Guid } from "guid-ts";
 import { client } from "../utils/trpc";
 import { setQuery, getQuery } from "../utils/query";
 import type { Contact } from "../../models/Contact";
 import { filterForTerm } from "../utils/search";
-import { todayISO } from "../utils/today";
 import { contactsSort } from "../utils/sort";
 import { trimArrays } from "../utils/trimArrays";
+import { newContact } from "../utils/import";
 
 interface Store {
   allContacts: Array<Contact>;
@@ -18,6 +17,7 @@ interface Store {
   applyFilter(term: string): void;
   loadContacts(): Promise<void>;
   saveContact(contact: Contact): Promise<Contact>;
+  saveMany(contacts: Contact[]): Promise<Contact[]>;
   deleteContact(contact: Contact): Promise<void>;
 }
 
@@ -25,6 +25,8 @@ function replaceInArr(arr: Array<Contact>, newContact: Contact) {
   const idx = arr.findIndex((c) => c.key === newContact.key);
   if (idx >= 0) {
     arr[idx] = newContact;
+  } else {
+    arr.push(newContact);
   }
 }
 
@@ -34,12 +36,7 @@ export const useStore = create<Store>((set) => ({
   contactsByKey: {},
   loading: false,
   createNewContact: async () => {
-    const baseContact: Contact = {
-      key: Guid.newGuid().toString(),
-      name: "?",
-      last: todayISO(),
-      __local: "true",
-    };
+    const baseContact = newContact();
     set(
       produce((state: Store) => {
         state.allContacts.unshift(baseContact);
@@ -93,7 +90,7 @@ export const useStore = create<Store>((set) => ({
     client.mutation("savePerson", contact);
     set(
       produce((state: Store) => {
-        state.contactsByKey[contact.key!] = contact;
+        state.contactsByKey[contact.key] = contact;
         replaceInArr(state.allContacts, contact);
         replaceInArr(state.filteredContacts, contact);
         state.allContacts.sort(contactsSort);
@@ -101,6 +98,32 @@ export const useStore = create<Store>((set) => ({
       })
     );
     return contact;
+  },
+  saveMany: async (contacts) => {
+    if (!contacts.length) {
+      return contacts;
+    }
+    contacts = contacts.map((contact) =>
+      produce(contact, (c) => {
+        trimArrays(c);
+        if (c.__local) {
+          delete c.__local;
+        }
+      })
+    );
+    client.mutation("saveMany", contacts);
+    set(
+      produce((state: Store) => {
+        for (const contact of contacts) {
+          state.contactsByKey[contact.key] = contact;
+          replaceInArr(state.allContacts, contact);
+          replaceInArr(state.filteredContacts, contact);
+        }
+        state.allContacts.sort(contactsSort);
+        state.filteredContacts.sort(contactsSort);
+      })
+    );
+    return contacts;
   },
   deleteContact: async (contact) => {
     if (contact.name !== "?" && !window.confirm(`Delete ${contact.name}?`)) {

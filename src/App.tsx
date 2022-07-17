@@ -4,6 +4,7 @@ import { Header } from "./Header";
 import { ContactList } from "./ContactList";
 import { useEffect } from "react";
 import { useStore } from "./stores/contacts";
+import { ImportLink } from "./Import";
 
 function App() {
   const loadContacts = useStore((store) => store.loadContacts);
@@ -17,7 +18,8 @@ function App() {
       <Header />
       <ContactList />
       <footer>
-        <a href="https://github.com/noahm/contactful">src</a> :: &#169; 2021
+        <ImportLink /> :: <a href="https://github.com/noahm/contactful">src</a>{" "}
+        :: &#169; 2021
       </footer>
       {isLoading && <div className="loader" />}
     </div>
