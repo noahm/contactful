@@ -9,12 +9,13 @@
     "zod": "^3.8.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
+    "@testing-library/dom": "^8.16.0",
+    "@testing-library/jest-dom": "^5.16.0",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^14.2.0",
     "@trpc/client": "^9.5.0",
     "@types/express": "^4.17.13",
-    "@types/jest": "^26.0.15",
+    "@types/jest": "^27.0.0",
     "@types/node": "^12.0.0",
     "@types/papaparse": "^5.3.2",
     "@types/react": "^17.0.0",
