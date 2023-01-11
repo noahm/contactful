@@ -19,4 +19,4 @@ app.use("/api", (req, res, next) => {
   return trpcMiddleware(req, res, next);
 });
 
-export = app;
+app.listen(process.env.PORT);
