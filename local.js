@@ -1,6 +1,6 @@
 require("dotenv").config({
   path: "./.env.local",
 });
-const app = require("./micro/server");
-app.listen(4000);
+process.env.PORT = 4000;
+require("./micro/server");
 console.log("Listening on port 4000");
