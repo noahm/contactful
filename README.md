@@ -19,4 +19,4 @@ Launches the unit tests in watch mode. (No real tests written yet.)
 
 ### `yarn build`
 
-Builds the app for production into the `build` and `micro` folders.\
+Builds the app for production into the `build` and `micro` folders.

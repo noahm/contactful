@@ -2,14 +2,12 @@ v: 0
 icon: contactful.png
 app_name: contactful
 micros:
-    - name: contactful
-      src: .
-      engine: nodejs16 
-      commands:
-        - yarn build
-      include:
-        - build
-        - micro
-      run: "node micro/server/index.js"
-
-    
+  - name: contactful
+    src: .
+    engine: nodejs16
+    commands:
+      - yarn build
+    include:
+      - build
+      - micro
+    run: "node micro/server/index.js"
