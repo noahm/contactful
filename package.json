@@ -67,5 +67,6 @@
   "proxy": "http://localhost:4000/",
   "resolutions": {
     "@svgr/webpack": "^6.0.0"
-  }
+  },
+  "packageManager": "yarn@3.6.2"
 }
